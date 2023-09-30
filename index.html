@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HelpMeOut</title>
+    <link rel="stylesheet" href="/dist/output.css" />
+    <script src="js/index.js" defer></script>
+  </head>
+  <body class="p-6">
+
+    <!-- CONTAINER FOR THE POP UP -->
+    <div class="flex flex-col gap-6 min-w-[250px] font-workSans">
+      <!-- header that contains logo and other icons -->
+      <div><img src="./images/logoMain.svg" alt="" /></div>
+
+      <!-- paragraph -->
+      <p class="text-[#413C6D]">
+        This extension helps you record and share help videos with ease.
+      </p>
+
+      <!-- container for full screen or current tab -->
+      <div class="flex justify-center items-center gap-4 font-[600]">
+        <!-- container for icon and text -->
+        <div class="flex flex-col gap-2 items-center">
+          <img src="./images/monitor.svg" class="max-w-[30px]" alt="" />
+          <p>Full screen</p>
+        </div>
+
+        <!-- container for icon and text -->
+        <div class="flex flex-col gap-2 items-center">
+          <img src="./images/currentTab.svg" class="max-w-[30px]" alt="" />
+          <p class="text-[#120B48]">Current Tab</p>
+        </div>
+      </div>
+
+      <!-- container for camera and audio -->
+      <div class="flex flex-col gap-4 text-[#100A42] text-[14px] font-[500]">
+        <!-- container for camera toggle -->
+        <div
+          class="flex w-full border-2 border-[#100A42] rounded-xl p-2 justify-start gap-2 items-center"
+        >
+          <img src="./images/video-camera.svg" alt="" />
+          <p>Camera</p>
+        </div>
+
+        <!-- container for audio toggle -->
+        <div
+          class="flex w-full border-2 border-[#100A42] rounded-xl p-2 justify-start gap-2 items-center"
+        >
+          <img src="./images/microphone.svg" alt="" />
+          <p>Audio</p>
+        </div>
+      </div>
+
+      <!-- start recording btn -->
+      <div class="start_record bg-[#120B48] text-white p-4 text-base cursor-pointer w-full text-center rounded-xl">Start Recording</div>
+    </div>
+  </body>
+</html>
+
+
