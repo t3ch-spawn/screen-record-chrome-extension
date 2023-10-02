@@ -5,15 +5,81 @@ function onAccessApproved(stream) {
 
   recorder.start();
 
+  let controlPanel = document.createElement("div");
+  controlPanel.classList.add(".control-panel");
+  controlPanel.insertAdjacentHTML(
+    "afterbegin",
+    `<div style="display: flex;
+                    gap: 20px;
+                    justify-items: center;
+                    align-items: center;
+      ">
+      <p style = "cursor: pointer" class="myStop">Stop</p>
+      <p class="myPause">Pause</p>
+</div>`
+  );
+
+  let styles = {
+    backgroundColor: "black",
+    borderRadius: "10px",
+    padding: "10px",
+    position: "fixed",
+    left: "40px",
+    bottom: "20px",
+    width: "300px",
+    color: "white",
+  };
+
+  Object.assign(controlPanel.style, styles);
+
+  // stop.style.backgroundColor = 'red'
+  // stop.textContent = "STOP"
+  // stop.style.position = "absolute"
+  // stop.style.top = "0"
+  // stop.style.left = "0"
+  document.body.appendChild(controlPanel);
+
+  document.querySelector(".myStop").addEventListener("click", () => {
+    if (!recorder) return console.log("no recorder");
+
+    console.log(recorder);
+    recorder.stop();
+
+    document.body.removeChild(controlPanel);
+  });
+
+  // event that triggers the pausing of the recording
+  let isPaused = false;
+  let pauseBtn = document.querySelector(".myPause");
+  pauseBtn.addEventListener("click", () => {
+    if (!recorder) return console.log("no recorder");
+
+    console.log(recorder);
+    if (!isPaused) {
+      recorder.pause();
+      pauseBtn.innerHTML = "play";
+      isPaused = true;
+    } else {
+      recorder.resume();
+      pauseBtn.innerHTML = "pause";
+      isPaused = false;
+    }
+  });
+
   recorder.onStop = () => {
     stream.getTracks().forEach((track) => {
       if (track.readyState == "live") {
         track.stop();
       }
     });
+ 
+    console.log("i have stopped");
+
+    document.body.removeChild(controlPanel);
   };
 
   recorder.ondataavailable = (event) => {
+    console.log(event.data);
     let recordedBlob = event.data;
     let url = URL.createObjectURL(recordedBlob);
 
@@ -36,43 +102,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // console.log("request_recording");
     sendResponse(`processed: ${message.action}`);
 
-    let controlPanel = document.createElement("div");
-    controlPanel.classList.add(".control-panel");
-    controlPanel.insertAdjacentHTML(
-      "afterbegin",
-      `<div style="display: flex;
-                    gap: 20px;
-                    justify-items: center;
-                    align-items: center;
-      ">
-      <p style = "cursor: pointer" class="myStop">Stop</p>
-      <p>Pause</p>
-</div>`
-    );
-
-    let styles = {
-      backgroundColor: "black",
-      borderRadius: "10px",
-      padding: "10px",
-      position: "fixed",
-      left: "40px",
-      bottom: "20px",
-      width: "300px",
-      color: "white",
-    };
-
-    Object.assign(controlPanel.style, styles);
-
-    // stop.style.backgroundColor = 'red'
-    // stop.textContent = "STOP"
-    // stop.style.position = "absolute"
-    // stop.style.top = "0"
-    // stop.style.left = "0"
-    document.body.appendChild(controlPanel);
-
-    document.querySelector(".myStop").addEventListener("click", () => {
-      console.log("e don lock");
-    });
     navigator.mediaDevices
       .getDisplayMedia({
         audio: true,
@@ -86,11 +115,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       });
   }
 
-  if (message.action == "stop_recording") {
-    sendResponse(`processed: ${message.action}`);
-
-    if (!recorder) return console.log("no recorder");
-
-    recorder.stop();
-  }
+  //   if (message.action == "stop_recording") {
+  //     sendResponse(`processed: ${message.action}`);
+  //   }
 });
